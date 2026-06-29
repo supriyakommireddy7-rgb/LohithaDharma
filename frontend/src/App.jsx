@@ -20,7 +20,8 @@ import LeadManagement from './pages/LeadManagement';
 import Settings from './pages/Settings';
 
 // Set base URL for axios requests (proxy dev port)
-axios.defaults.baseURL = 'http://localhost:5001';
+// Empty string means it will use relative URLs (which is intercepted by Vite's proxy in dev, and works natively in production)
+axios.defaults.baseURL = import.meta.env.VITE_API_URL || '';
 
 // Setup initial token if exists
 const initialToken = localStorage.getItem('ld_token');
@@ -118,10 +119,16 @@ const App = () => {
         showToast('Logged in successfully. Welcome!', 'success');
       }
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.error) {
-        setLoginError(error.response.data.error);
+      if (error.response) {
+        if (error.response.data && error.response.data.error) {
+          setLoginError(error.response.data.error);
+        } else {
+          setLoginError(`Server Error (${error.response.status}). Please check server logs or ensure correct environment variables.`);
+        }
+      } else if (error.request) {
+        setLoginError('Network Error: Could not connect to the server. Please check your internet or if the server is running.');
       } else {
-        setLoginError('Server connection error. Please try again later.');
+        setLoginError(`Error: ${error.message}`);
       }
       showToast('Login verification failed.', 'error');
     }

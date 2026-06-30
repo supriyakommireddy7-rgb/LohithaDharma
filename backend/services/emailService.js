@@ -1,23 +1,24 @@
 const nodemailer = require('nodemailer');
 
 const createTransporter = () => {
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
+  const user = process.env.EMAIL_USER;
+  const pass = process.env.EMAIL_PASS;
+  const host = process.env.EMAIL_HOST || 'smtp.gmail.com';
+  const port = process.env.EMAIL_PORT || 587;
 
   if (!user || !pass) {
     console.log('Email Transporter running in SIMULATION mode (missing SMTP credentials).');
     return null;
   }
 
-  // Set up Nodemailer transporter for Gmail (or standard SMTP)
+  // Set up Nodemailer transporter
   return nodemailer.createTransport({
-    service: 'gmail',
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true, // true for 465, false for other ports
+    host: host,
+    port: port,
+    secure: port == 465, // true for 465, false for other ports
     auth: {
       user: user,
-      pass: pass, // Gmail App Password
+      pass: pass,
     },
   });
 };
@@ -45,7 +46,7 @@ ${text}
 
   try {
     const info = await transporter.sendMail({
-      from: `"Lohitha Dharma AI Assistant" <${process.env.SMTP_USER}>`,
+      from: `"Lohitha Dharma AI Assistant" <${process.env.FROM_EMAIL || process.env.EMAIL_USER}>`,
       to,
       subject: subject.startsWith('Re:') ? subject : `Re: ${subject}`,
       text,

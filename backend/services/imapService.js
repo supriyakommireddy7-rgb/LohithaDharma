@@ -9,8 +9,8 @@ const Email = require('../models/Email');
 const fetchAndProcessUnreadEmails = async () => {
   console.log('[IMAP WORKFLOW] Starting Inbox check...');
   
-  if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
-    console.error('[IMAP WORKFLOW] Error: SMTP_USER or SMTP_PASS is not configured.');
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    console.error('[IMAP WORKFLOW] Error: EMAIL_USER or EMAIL_PASS is not configured.');
     throw new Error('IMAP credentials missing.');
   }
 
@@ -19,8 +19,8 @@ const fetchAndProcessUnreadEmails = async () => {
     port: 993,
     secure: true,
     auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS
     },
     logger: false
   });
@@ -81,7 +81,7 @@ const fetchAndProcessUnreadEmails = async () => {
           }
 
           const lowerEmail = emailAddress.toLowerCase();
-          if (lowerEmail.includes('noreply') || lowerEmail.includes('no-reply') || lowerEmail.includes('google.com') || lowerEmail.includes('daemon') || lowerEmail === process.env.SMTP_USER.toLowerCase()) {
+          if (lowerEmail.includes('noreply') || lowerEmail.includes('no-reply') || lowerEmail.includes('google.com') || lowerEmail.includes('daemon') || lowerEmail === process.env.EMAIL_USER.toLowerCase()) {
               console.log(`[IMAP WORKFLOW] Ignoring system/welcome email from: ${emailAddress}`);
               results.skipped++;
               await client.messageFlagsAdd(message.uid.toString(), ['\\Seen'], { uid: true });

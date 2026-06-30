@@ -315,7 +315,7 @@ const configStatus = async (req, res, next) => {
       data: {
         geminiActive: !!process.env.GEMINI_API_KEY,
         openaiActive: !!process.env.OPENAI_API_KEY,
-        smtpActive: !!process.env.SMTP_USER && !!process.env.SMTP_PASS,
+        smtpActive: !!process.env.EMAIL_USER && !!process.env.EMAIL_PASS,
         mongodbActive: mongoose.connection.readyState === 1
       }
     });

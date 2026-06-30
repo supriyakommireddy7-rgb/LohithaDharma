@@ -9,7 +9,7 @@ const Sent = ({ emails, onViewEmail }) => {
   emails.forEach((mail) => {
     mail.history.forEach((hist) => {
       // Outbound emails are sent from the office
-      if (hist.sender === 'office@lohithadharma.com') {
+      if (hist.sender === 'lohithadharma48@gmail.com') {
         outboundEmails.push({
           parentMailId: mail._id,
           recipient: hist.recipient,

@@ -44,14 +44,14 @@ const processIncomingEmailData = async ({ messageId, name, email, phone, subject
   // Populate initial email history logs
   emailRecord.history.push({
     sender: email,
-    recipient: 'office@lohithadharma.com',
+    recipient: process.env.EMAIL_USER || 'lohithadharma48@gmail.com',
     subject: subject || 'No Subject',
     message: message,
     isAiGenerated: false
   });
 
   emailRecord.history.push({
-    sender: 'office@lohithadharma.com',
+    sender: process.env.EMAIL_USER || 'lohithadharma48@gmail.com',
     recipient: email,
     subject: subject ? `Re: ${subject}` : 'Re: Inquiry - Lohitha Dharma',
     message: replyText,
@@ -133,7 +133,7 @@ const sendEmail = async (req, res, next) => {
     if (emailRecord) {
       // Update history and update status to Contacted
       emailRecord.history.push({
-        sender: 'office@lohithadharma.com',
+        sender: process.env.EMAIL_USER || 'lohithadharma48@gmail.com',
         recipient: targetEmail,
         subject: targetSubject ? `Re: ${targetSubject}` : 'Follow-up',
         message: message,
@@ -153,7 +153,7 @@ const sendEmail = async (req, res, next) => {
         source: 'Email'
       });
       emailRecord.history.push({
-        sender: 'office@lohithadharma.com',
+        sender: process.env.EMAIL_USER || 'lohithadharma48@gmail.com',
         recipient: targetEmail,
         subject: targetSubject || 'Follow-up - Lohitha Dharma',
         message: message,

@@ -83,7 +83,7 @@ const EmailDetails = ({ emailId, onBack, showToast, refreshEmails }) => {
     setGeneratingDraft(true);
     try {
       // Find the last message sent by the customer to draft a response for it
-      const customerMsgs = mail.history.filter(h => h.sender !== 'office@lohithadharma.com');
+      const customerMsgs = mail.history.filter(h => h.sender !== 'lohithadharma48@gmail.com');
       const lastCustomerMsg = customerMsgs[customerMsgs.length - 1]?.message || mail.message;
 
       const response = await axios.post('/api/generate-reply', {
@@ -165,7 +165,7 @@ const EmailDetails = ({ emailId, onBack, showToast, refreshEmails }) => {
             
             <div className="p-6 flex-1 space-y-6 overflow-y-auto max-h-[500px]">
               {mail.history.map((chat, idx) => {
-                const isOutbound = chat.sender === 'office@lohithadharma.com';
+                const isOutbound = chat.sender === 'lohithadharma48@gmail.com';
                 return (
                   <div 
                     key={chat._id || idx}
